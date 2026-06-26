@@ -8,7 +8,7 @@ producer/consumer pattern.
 
 ## Video
 
-[![Watch the video](https://img.youtube.com/vi/KejD4vCSbXg/maxresdefault.jpg)](https://www.youtube.com/watch?v=KejD4vCSbXg)
+[![Watch the video](https://img.youtube.com/vi/F47EyxxE-Uk/maxresdefault.jpg)](https://www.youtube.com/watch?v=F47EyxxE-Uk)
 
 ## Specification
 
