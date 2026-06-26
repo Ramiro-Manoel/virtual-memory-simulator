@@ -1,66 +1,66 @@
-# Simulador de Memória Virtual
+# Virtual Memory Simulator
 
-Trabalho prático de Análise e Aplicação de Sistemas Operacionais.
+Practical assignment for Operating Systems Analysis and Application.
 
-Simula o gerenciamento de memória virtual com paginação: tradução de endereços pela MMU,
-tratamento de page faults e substituição de páginas. Usa threads (processos leves) no
-padrão produtor/consumidor.
+Simulates virtual memory management with paging: address translation by the MMU, page
+fault handling and page replacement. Uses threads (lightweight processes) in the
+producer/consumer pattern.
 
-## Vídeo
+## Video
 
 TODO
 
-## Especificação
+## Specification
 
-- Memória principal (RAM): 64 KB
-- Memória virtual: 1 MB
-- Página/frame: 8 KB
-- Frames físicos: 8
-- Páginas virtuais: 128
+- Main memory (RAM): 64 KB
+- Virtual memory: 1 MB
+- Page/frame: 8 KB
+- Physical frames: 8
+- Virtual pages: 128
 - Threads: 2
-- Algoritmo de substituição: LRU (padrão) ou FIFO
+- Replacement algorithm: LRU (default) or FIFO
 
-## Como executar
+## How to run
 
-Precisa só de Python 3.10+ (sem bibliotecas externas).
+Requires only Python 3.10+ (no external libraries).
 
 ```bash
 cd src
-python main.py                  # LRU (padrão)
+python main.py                  # LRU (default)
 python main.py --algorithm fifo # FIFO
 ```
 
-## Como funciona
+## How it works
 
-Cada processo gera acessos à memória (página + offset). A MMU traduz esse endereço
-virtual para o endereço físico (frame + offset):
+Each process generates memory accesses (page + offset). The MMU translates this virtual
+address into a physical address (frame + offset):
 
-- Se a página já está na RAM, lê o byte direto (hit).
-- Se não está, ocorre um page fault: a página é carregada do disco para a RAM. Se não
-  houver frame livre, o algoritmo de substituição (LRU ou FIFO) escolhe uma página para
-  remover e abrir espaço.
+- If the page is already in RAM, it reads the byte directly (hit).
+- If not, a page fault occurs: the page is loaded from disk into RAM. If there is no free
+  frame, the replacement algorithm (LRU or FIFO) chooses a page to remove and free space.
 
-As threads produtoras geram os acessos e colocam numa fila. A thread consumidora retira
-da fila e chama a MMU. A MMU usa um lock para tratar um acesso por vez com segurança.
+The producer threads generate the accesses and put them in a queue. The consumer thread
+takes them from the queue and calls the MMU. The MMU uses a lock to handle one access at
+a time safely.
 
-## Estrutura
+## Structure
 
 ```
 src/
-├── main.py            # ponto de entrada e escolha do algoritmo
-├── config.py          # constantes do sistema
-├── simulator.py       # monta e roda a simulação
-├── models/            # estruturas de dados (acesso e resultado)
+├── main.py            # entry point and algorithm selection
+├── config.py          # system constants
+├── simulator.py       # builds and runs the simulation
+├── models/            # data structures (access and result)
 ├── memory/            # disk.py, ram.py, page_table.py
 ├── replacement/       # base.py, lru.py, fifo.py
-├── mmu/               # mmu.py (lógica de tradução e page fault)
-└── threads/           # producer.py e consumer.py
+├── mmu/               # mmu.py (translation and page fault logic)
+└── threads/           # producer.py and consumer.py
 ```
 
-As memórias (disk e ram) apenas guardam bytes. Toda a lógica fica na MMU. O algoritmo de
-substituição é trocável sem alterar o resto do código.
+The memories (disk and ram) only store bytes. All the logic lives in the MMU. The
+replacement algorithm can be swapped without changing the rest of the code.
 
-## Exemplo de saída
+## Sample output
 
 ```
 [#001] Thread 0 | Page 8, Offset 2306
